@@ -21,6 +21,10 @@ export const typography = {
 		fontFamily: fonts.regular,
 		fontSize: 14,
 	},
+	textMedium: {
+		fontFamily: fonts.medium,
+		fontSize: 14,
+	},
 	textSmall: {
 		fontFamily: fonts.regular,
 		fontSize: 12,

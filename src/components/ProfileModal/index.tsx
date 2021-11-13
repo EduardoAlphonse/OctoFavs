@@ -73,9 +73,9 @@ export const ProfileModal = ({
 
 	useEffect(() => {
 		setIsLoading(true);
-		if (username) {
-			getUserData();
-		}
+		// if (username) {
+		getUserData();
+		// }
 	}, [username]);
 
 	return isloading ? (
@@ -157,10 +157,17 @@ const ModalHeader = ({
 				<Feather name="arrow-left" size={24} color={colors.textLight} />
 			</TouchableOpacity>
 
-			<Text style={styles.username}>{username}</Text>
+			<Text style={styles.username}>
+				{/* <AntDesign
+					name="github"
+					size={16}
+					color={colors.textLight}
+				/> */}
+				{username}
+			</Text>
 		</View>
 
-		<View style={styles.userContainer}>
+		<View style={styles.userDataContainer}>
 			{isLoading ? (
 				<>
 					<AntDesign name="github" size={100} color={colors.accent} />
@@ -169,10 +176,17 @@ const ModalHeader = ({
 					</Text>
 				</>
 			) : (
-				<>
+				<View style={styles.userDataWrapper}>
 					<Image source={{ uri: avatar }} style={styles.avatar} />
 					<Text style={styles.title}>{title}</Text>
-				</>
+					<TouchableOpacity
+						onPress={() => {}}
+						hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+						style={styles.starButton}
+					>
+						<AntDesign name="staro" size={24} color={colors.primary} />
+					</TouchableOpacity>
+				</View>
 			)}
 		</View>
 

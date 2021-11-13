@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomTabStackParamList } from '../../navigation/stacks';
 import { Button } from '../../components/Button';
 import { ProfileCard, Profile } from '../../components/ProfileCard';
-import { HeaderUser } from '../../components/HeaderUser';
+import { HeaderInfo } from '../../components/HeaderInfo';
 
 import { styles } from './styles';
 
@@ -19,65 +19,6 @@ export function Home() {
 	const [savedProfiles, setSavedProfiles] = useState<Profile[] | null>(null);
 	const { navigate } = useNavigation<HomeNavigationProps>();
 
-	// const profiles = [
-	// 	{
-	// 		id: 1,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 4,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 5,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 6,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 7,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// 	{
-	// 		id: 8,
-	// 		avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
-	// 		name: 'Eduardo Oliveira',
-	// 		username: 'EduardoAlphonse',
-	// 		lastUpdate: '09/11/2021',
-	// 	},
-	// ];
-
 	const handleSearchProfile = () => {
 		navigate('AddProfile');
 	};
@@ -88,7 +29,12 @@ export function Home() {
 
 	return (
 		<View style={styles.container}>
-			<HeaderUser />
+			{savedProfiles?.length && (
+				<HeaderInfo
+					title="Perfis encontrados"
+					data={savedProfiles?.length.toString()}
+				/>
+			)}
 
 			<View style={styles.content}>
 				{savedProfiles ? (

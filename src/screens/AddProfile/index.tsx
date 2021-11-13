@@ -10,7 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Modalize } from 'react-native-modalize';
 
 import { Profile, ProfileSearchCard } from '../../components/ProfileSearchCard';
-import { HeaderUser } from '../../components/HeaderUser';
+import { HeaderInfo } from '../../components/HeaderInfo';
 import { ProfileModal } from '../../components/ProfileModal';
 import { api } from '../../services/api';
 
@@ -32,8 +32,11 @@ export function AddProfile() {
 
 	const searchProfiles = async (username: string) => {
 		const { data } = await api.get<SearchProfilesResponse>(
-			`/search/users?q=${username}`
+			`/search/users?q=${username}&per_page=100`
 		);
+
+		console.log(data.items);
+
 		const parsedData = data.items.map(({ id, login, avatar_url }) => {
 			return {
 				id,
@@ -75,7 +78,12 @@ export function AddProfile() {
 
 	return (
 		<View style={styles.container}>
-			<HeaderUser />
+			{profilesFound?.length && (
+				<HeaderInfo
+					title="Perfis encontrados"
+					data={profilesFound?.length.toString()}
+				/>
+			)}
 
 			<View style={styles.content}>
 				{profilesFound && !isSearching ? (

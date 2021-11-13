@@ -3,14 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // screens
-import { Login } from '../screens/Login';
+import { Onboarding } from '../screens/Onboarding';
 
 // stacks
 import { BottomTabNavigator } from './stacks';
 import { colors } from '../styles';
 
 export type RootStackParamList = {
-	Login: undefined;
+	Onboarding: undefined;
 	HomeStack: undefined;
 };
 
@@ -23,7 +23,7 @@ export const Navigator = () => (
 				headerShown: false,
 			}}
 		>
-			<RootStack.Screen name="Login" component={Login} />
+			<RootStack.Screen name="Onboarding" component={Onboarding} />
 
 			<RootStack.Screen name="HomeStack" component={BottomTabNavigator} />
 		</RootStack.Navigator>

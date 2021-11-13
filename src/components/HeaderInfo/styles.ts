@@ -10,16 +10,10 @@ export const styles = StyleSheet.create({
 		backgroundColor: colors.backgroundLight,
 		paddingTop: StatusBar.currentHeight ? StatusBar.currentHeight + 20 : 40,
 		paddingHorizontal: 20,
-		paddingBottom: 20,
+		paddingBottom: 10,
 	},
-	username: {
-		...typography.buttonText,
-		color: colors.textLight,
-	},
-	avatar: {
-		width: 40,
-		height: 40,
-		borderRadius: 200,
-		resizeMode: 'contain',
+	text: {
+		...typography.textMedium,
+		color: colors.text,
 	},
 });

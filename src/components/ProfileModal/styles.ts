@@ -27,9 +27,14 @@ export const styles = StyleSheet.create({
 		color: colors.textLight,
 		textAlign: 'center',
 	},
-	userContainer: {
+	userDataContainer: {
 		padding: 20,
 		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	userDataWrapper: {
+		position: 'relative',
+		width: '100%',
 		alignItems: 'center',
 	},
 	avatar: {
@@ -42,6 +47,11 @@ export const styles = StyleSheet.create({
 		color: colors.text,
 		marginTop: 20,
 		textAlign: 'center',
+	},
+	starButton: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
 	},
 	subtitle: {
 		...typography.subtitle,
