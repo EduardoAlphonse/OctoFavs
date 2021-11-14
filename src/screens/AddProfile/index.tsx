@@ -5,15 +5,14 @@ import {
 	FlatList,
 	TextInput,
 	ActivityIndicator,
-	Alert,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { Modalize } from 'react-native-modalize';
 
 import { Profile } from '../../components/ProfileCard';
 import { ProfileSearchCard } from '../../components/ProfileSearchCard';
 import { HeaderInfo } from '../../components/HeaderInfo';
-import { ProfileModal } from '../../components/ProfileModal';
+
+import { useProfileModal } from '../../hooks/useProfileModal';
 import { api } from '../../services/api';
 
 import { colors } from '../../styles';
@@ -27,9 +26,9 @@ export function AddProfile() {
 	const [profilesFound, setProfilesFound] = useState<Profile[] | null>(null);
 	const [inputText, setInputText] = useState('');
 	const [isSearching, setIsSearching] = useState(false);
-	const [selectedUser, setSelectedUser] = useState('');
 
-	const modalRef = useRef<Modalize>(null);
+	const { openModal, handleSetUsername } = useProfileModal();
+
 	const inputRef = useRef<TextInput>(null);
 
 	const searchProfiles = async (username: string) => {
@@ -55,14 +54,8 @@ export function AddProfile() {
 	};
 
 	const handleSelectUser = (username: string) => {
-		if (!selectedUser || selectedUser !== username) {
-			setSelectedUser(username);
-		}
-		modalRef.current?.open();
-	};
-
-	const handleCloseModal = () => {
-		modalRef.current?.close();
+		handleSetUsername(username);
+		openModal();
 	};
 
 	useEffect(() => {
@@ -159,11 +152,11 @@ export function AddProfile() {
 				/>
 			</View>
 
-			<ProfileModal
+			{/* <ProfileModal
 				modalRef={modalRef}
 				closeModal={handleCloseModal}
 				username={selectedUser}
-			/>
+			/> */}
 		</View>
 	);
 }

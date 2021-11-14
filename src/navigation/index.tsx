@@ -7,7 +7,9 @@ import { Onboarding } from '../screens/Onboarding';
 
 // stacks
 import { BottomTabNavigator } from './stacks';
-import { View } from 'react-native';
+import { ProfileModal } from '../components/ProfileModal';
+import { ProfileModalContextProvider } from '../contexts/ProfileModalContext';
+import { StorageContextProvider } from '../contexts/StorageContext';
 
 export type RootStackParamList = {
 	Onboarding: undefined;
@@ -17,17 +19,21 @@ export type RootStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export const Navigator = () => (
-	<NavigationContainer>
-		<RootStack.Navigator
-			screenOptions={{
-				headerShown: false,
-			}}
-		>
-			<RootStack.Screen name="Onboarding" component={Onboarding} />
+	<StorageContextProvider>
+		<ProfileModalContextProvider>
+			<NavigationContainer>
+				<RootStack.Navigator
+					screenOptions={{
+						headerShown: false,
+					}}
+				>
+					<RootStack.Screen name="Onboarding" component={Onboarding} />
 
-			<RootStack.Screen name="HomeStack" component={BottomTabNavigator} />
-		</RootStack.Navigator>
+					<RootStack.Screen name="HomeStack" component={BottomTabNavigator} />
+				</RootStack.Navigator>
+			</NavigationContainer>
 
-		<View />
-	</NavigationContainer>
+			<ProfileModal />
+		</ProfileModalContextProvider>
+	</StorageContextProvider>
 );

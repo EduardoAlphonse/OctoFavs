@@ -14,10 +14,11 @@ import { IHandles } from 'react-native-modalize/lib/options';
 import { RepositoryCard } from '../RepositoryCard';
 import { Profile } from '../ProfileCard';
 import { api } from '../../services/api';
+import { useStorage } from '../../hooks/useStorage';
+import { useProfileModal } from '../../hooks/useProfileModal';
 
 import { styles } from './styles';
 import { colors } from '../../styles';
-import { useStorage } from '../../hooks/useStorage';
 
 type RepositoriesResponse = {
 	id: number;
@@ -33,19 +34,23 @@ type UserData = Profile & {
 	repositories: RepositoriesResponse[];
 };
 
-type ProfileModalProps = {
-	username: string;
-	closeModal: () => void;
-	modalRef: RefObject<IHandles>;
-};
+// type ProfileModalProps = {
+// 	username: string;
+// 	closeModal: () => void;
+// 	modalRef: RefObject<IHandles>;
+// };
 
-export const ProfileModal = ({
-	username,
-	closeModal,
-	modalRef,
-}: ProfileModalProps) => {
+// export const ProfileModal = ({
+// 	username,
+// 	closeModal,
+// 	modalRef,
+// }: ProfileModalProps) => {
+
+export const ProfileModal = () => {
 	const [userData, setUserData] = useState<UserData>({} as UserData);
 	const [isloading, setIsLoading] = useState(true);
+
+	const { username, modalRef, closeModal } = useProfileModal();
 
 	const getUserData = async () => {
 		setIsLoading(true);
