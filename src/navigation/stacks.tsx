@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Entypo, AntDesign } from '@expo/vector-icons';
 
-import { HeaderUser } from '../components/HeaderUser';
+import { StorageContextProvider } from '../contexts/StorageContext';
 
 // screens
 import { Home } from '../screens/Home';
@@ -21,36 +21,38 @@ const BottomTabStack = createBottomTabNavigator<BottomTabStackParamList>();
 
 export const BottomTabNavigator = () => {
 	return (
-		<BottomTabStack.Navigator
-			screenOptions={{
-				tabBarActiveTintColor: colors.primary,
-				tabBarLabelStyle: { ...typography.textSmall },
-				tabBarStyle: styles.tabBarStyle,
-				headerShown: false,
-			}}
-			backBehavior="none"
-		>
-			<BottomTabStack.Screen
-				name="Home"
-				component={Home}
-				options={{
-					tabBarLabel: 'Salvos',
-					tabBarIcon: (props) => (
-						<Entypo name="github" size={20} color={props.color} />
-					),
+		<StorageContextProvider>
+			<BottomTabStack.Navigator
+				screenOptions={{
+					tabBarActiveTintColor: colors.primary,
+					tabBarLabelStyle: { ...typography.textSmall },
+					tabBarStyle: styles.tabBarStyle,
+					headerShown: false,
 				}}
-			/>
-			<BottomTabStack.Screen
-				name="AddProfile"
-				component={AddProfile}
-				options={{
-					tabBarLabel: 'Adicionar',
-					tabBarIcon: (props) => (
-						<AntDesign name="pluscircleo" size={20} color={props.color} />
-					),
-				}}
-			/>
-		</BottomTabStack.Navigator>
+				backBehavior="none"
+			>
+				<BottomTabStack.Screen
+					name="Home"
+					component={Home}
+					options={{
+						tabBarLabel: 'Perfis',
+						tabBarIcon: (props) => (
+							<Entypo name="github" size={20} color={props.color} />
+						),
+					}}
+				/>
+				<BottomTabStack.Screen
+					name="AddProfile"
+					component={AddProfile}
+					options={{
+						tabBarLabel: 'Adicionar',
+						tabBarIcon: (props) => (
+							<AntDesign name="pluscircleo" size={20} color={props.color} />
+						),
+					}}
+				/>
+			</BottomTabStack.Navigator>
+		</StorageContextProvider>
 	);
 };
 

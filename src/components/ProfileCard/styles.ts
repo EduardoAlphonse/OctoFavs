@@ -19,11 +19,15 @@ export const styles = StyleSheet.create({
 		flex: 1,
 	},
 	nameWrapper: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 		marginBottom: 10,
 	},
 	name: {
+		flex: 1,
 		...typography.text,
 		color: colors.text,
+		marginRight: 20,
 	},
 	username: {
 		...typography.textSmallest,

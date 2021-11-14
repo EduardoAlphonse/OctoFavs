@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { BottomTabStackParamList } from '../../navigation/stacks';
 import { Button } from '../../components/Button';
-import { ProfileCard, Profile } from '../../components/ProfileCard';
+import { ProfileCard } from '../../components/ProfileCard';
 import { HeaderInfo } from '../../components/HeaderInfo';
+import { useStorage } from '../../hooks/useStorage';
 
 import { styles } from './styles';
 
@@ -16,28 +17,24 @@ type HomeNavigationProps = NativeStackNavigationProp<
 >;
 
 export function Home() {
-	const [savedProfiles, setSavedProfiles] = useState<Profile[] | null>(null);
+	const { savedProfiles } = useStorage();
 	const { navigate } = useNavigation<HomeNavigationProps>();
 
 	const handleSearchProfile = () => {
 		navigate('AddProfile');
 	};
 
-	useEffect(() => {
-		// setSavedProfiles(profiles);
-	}, []);
-
 	return (
 		<View style={styles.container}>
-			{savedProfiles?.length && (
+			{savedProfiles?.length ? (
 				<HeaderInfo
-					title="Perfis encontrados"
+					title="Perfis salvos"
 					data={savedProfiles?.length.toString()}
 				/>
-			)}
+			) : null}
 
 			<View style={styles.content}>
-				{savedProfiles ? (
+				{savedProfiles?.length ? (
 					<View style={styles.userListWrapper}>
 						<FlatList
 							data={savedProfiles}

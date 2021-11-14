@@ -6,13 +6,8 @@ import {
 	TouchableOpacityProps,
 } from 'react-native';
 
+import { Profile } from '../ProfileCard';
 import { styles } from './styles';
-
-export type Profile = {
-	id: number;
-	login: string;
-	avatar_url: string;
-};
 
 type ProfileCardProps = TouchableOpacityProps & {
 	data: Profile;

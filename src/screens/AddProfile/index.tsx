@@ -5,11 +5,13 @@ import {
 	FlatList,
 	TextInput,
 	ActivityIndicator,
+	Alert,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Modalize } from 'react-native-modalize';
 
-import { Profile, ProfileSearchCard } from '../../components/ProfileSearchCard';
+import { Profile } from '../../components/ProfileCard';
+import { ProfileSearchCard } from '../../components/ProfileSearchCard';
 import { HeaderInfo } from '../../components/HeaderInfo';
 import { ProfileModal } from '../../components/ProfileModal';
 import { api } from '../../services/api';
@@ -35,13 +37,12 @@ export function AddProfile() {
 			`/search/users?q=${username}&per_page=100`
 		);
 
-		console.log(data.items);
-
 		const parsedData = data.items.map(({ id, login, avatar_url }) => {
 			return {
 				id,
 				login,
 				avatar_url,
+				name: '',
 			};
 		});
 
@@ -54,7 +55,9 @@ export function AddProfile() {
 	};
 
 	const handleSelectUser = (username: string) => {
-		setSelectedUser(username);
+		if (!selectedUser || selectedUser !== username) {
+			setSelectedUser(username);
+		}
 		modalRef.current?.open();
 	};
 
@@ -65,10 +68,12 @@ export function AddProfile() {
 	useEffect(() => {
 		if (inputText) {
 			setIsSearching(true);
+			setProfilesFound(null);
 
 			const timeout = setTimeout(() => {
 				searchProfiles(inputText);
 			}, 1000);
+
 			return () => clearTimeout(timeout);
 		} else {
 			setIsSearching(false);
@@ -78,12 +83,12 @@ export function AddProfile() {
 
 	return (
 		<View style={styles.container}>
-			{profilesFound?.length && (
+			{profilesFound?.length ? (
 				<HeaderInfo
 					title="Perfis encontrados"
 					data={profilesFound?.length.toString()}
 				/>
-			)}
+			) : null}
 
 			<View style={styles.content}>
 				{profilesFound && !isSearching ? (
@@ -118,7 +123,7 @@ export function AddProfile() {
 								<Text style={[styles.emptyListMessage, { marginTop: 40 }]}>
 									Ops! Não encontramos nenhum perfil,{' '}
 									<Text style={{ color: colors.danger }}>
-										verifique o que você digitou.
+										verifique o que você digitou.{' '}
 									</Text>
 								</Text>
 							</View>

@@ -12,10 +12,12 @@ import { Modalize } from 'react-native-modalize';
 import { IHandles } from 'react-native-modalize/lib/options';
 
 import { RepositoryCard } from '../RepositoryCard';
+import { Profile } from '../ProfileCard';
 import { api } from '../../services/api';
 
 import { styles } from './styles';
 import { colors } from '../../styles';
+import { useStorage } from '../../hooks/useStorage';
 
 type RepositoriesResponse = {
 	id: number;
@@ -27,16 +29,7 @@ type RepositoriesResponse = {
 	updated_at: string;
 };
 
-type UserResponse = {
-	login: string;
-	name: string;
-	avatar_url: string;
-};
-
-type UserData = {
-	login: string;
-	name: string;
-	avatar_url: string;
+type UserData = Profile & {
 	repositories: RepositoriesResponse[];
 };
 
@@ -51,13 +44,13 @@ export const ProfileModal = ({
 	closeModal,
 	modalRef,
 }: ProfileModalProps) => {
-	const [userData, setUserData] = useState<UserData>();
+	const [userData, setUserData] = useState<UserData>({} as UserData);
 	const [isloading, setIsLoading] = useState(true);
 
 	const getUserData = async () => {
-		const { data: userInfo } = await api.get<UserResponse>(
-			`/users/${username}`
-		);
+		setIsLoading(true);
+
+		const { data: userInfo } = await api.get<Profile>(`/users/${username}`);
 		const { data: userRepositories } = await api.get<RepositoriesResponse[]>(
 			`/users/${username}/repos?sort=updated`
 		);
@@ -72,10 +65,9 @@ export const ProfileModal = ({
 	};
 
 	useEffect(() => {
-		setIsLoading(true);
-		// if (username) {
-		getUserData();
-		// }
+		if (username) {
+			getUserData();
+		}
 	}, [username]);
 
 	return isloading ? (
@@ -86,9 +78,10 @@ export const ProfileModal = ({
 			modalHeight={Dimensions.get('window').height * 0.8}
 			HeaderComponent={
 				<ModalHeader
-					username={username}
-					title={userData?.name}
-					avatar={userData?.avatar_url}
+					id={userData?.id}
+					login={username}
+					name={userData?.name}
+					avatar_url={userData?.avatar_url}
 					closeModal={closeModal}
 					isLoading
 				/>
@@ -121,9 +114,10 @@ export const ProfileModal = ({
 			}}
 			HeaderComponent={
 				<ModalHeader
-					username={username}
-					title={userData?.name}
-					avatar={userData?.avatar_url}
+					id={userData?.id}
+					login={username}
+					name={userData?.name}
+					avatar_url={userData?.avatar_url}
 					closeModal={closeModal}
 				/>
 			}
@@ -134,62 +128,79 @@ export const ProfileModal = ({
 const Separator = () => <View style={{ height: 20 }} />;
 
 type ModalHeaderProps = {
-	username: string;
-	title: string | undefined;
-	avatar: string | undefined;
+	id: number;
+	login: string;
+	name: string;
+	avatar_url: string;
 	isLoading?: boolean;
 	closeModal: () => void;
 };
 
 const ModalHeader = ({
-	username,
-	title,
-	avatar,
+	id,
+	login,
+	name,
+	avatar_url,
 	isLoading,
 	closeModal,
-}: ModalHeaderProps) => (
-	<View style={styles.headerContainer}>
-		<View style={styles.header}>
-			<TouchableOpacity
-				onPress={closeModal}
-				hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-			>
-				<Feather name="arrow-left" size={24} color={colors.textLight} />
-			</TouchableOpacity>
+}: ModalHeaderProps) => {
+	const { saveProfileToState } = useStorage();
 
-			<Text style={styles.username}>
-				{/* <AntDesign
+	const user: Profile = {
+		id,
+		login,
+		name,
+		avatar_url,
+	};
+
+	const handleSaveUser = () => {
+		saveProfileToState(user);
+	};
+
+	return (
+		<View style={styles.headerContainer}>
+			<View style={styles.header}>
+				<TouchableOpacity
+					onPress={closeModal}
+					hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+				>
+					<Feather name="arrow-left" size={24} color={colors.textLight} />
+				</TouchableOpacity>
+
+				<Text style={styles.username}>
+					{/* <AntDesign
 					name="github"
 					size={16}
 					color={colors.textLight}
 				/> */}
-				{username}
-			</Text>
-		</View>
+					{login}
+				</Text>
+			</View>
 
-		<View style={styles.userDataContainer}>
-			{isLoading ? (
-				<>
-					<AntDesign name="github" size={100} color={colors.accent} />
-					<Text style={[styles.title, { color: colors.accent }]}>
-						{username}
-					</Text>
-				</>
-			) : (
-				<View style={styles.userDataWrapper}>
-					<Image source={{ uri: avatar }} style={styles.avatar} />
-					<Text style={styles.title}>{title}</Text>
-					<TouchableOpacity
-						onPress={() => {}}
-						hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-						style={styles.starButton}
-					>
-						<AntDesign name="staro" size={24} color={colors.primary} />
-					</TouchableOpacity>
-				</View>
-			)}
-		</View>
+			<View style={styles.userDataContainer}>
+				{isLoading ? (
+					<>
+						<AntDesign name="github" size={100} color={colors.accent} />
+						<Text style={[styles.title, { color: colors.accent }]}>
+							{login}
+						</Text>
+					</>
+				) : (
+					<View style={styles.userDataWrapper}>
+						<Image source={{ uri: avatar_url }} style={styles.avatar} />
+						<Text style={styles.title}>{name}</Text>
+						<TouchableOpacity
+							onPress={handleSaveUser}
+							hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+							style={styles.starButton}
+						>
+							<AntDesign name="staro" size={24} color={colors.primary} />
+						</TouchableOpacity>
+					</View>
+				)}
+			</View>
 
-		<Text style={styles.subtitle}>Repositórios</Text>
-	</View>
-);
+			<Text style={styles.subtitle}>Repositórios</Text>
+		</View>
+	);
+};

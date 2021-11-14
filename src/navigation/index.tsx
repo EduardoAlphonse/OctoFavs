@@ -7,7 +7,7 @@ import { Onboarding } from '../screens/Onboarding';
 
 // stacks
 import { BottomTabNavigator } from './stacks';
-import { colors } from '../styles';
+import { View } from 'react-native';
 
 export type RootStackParamList = {
 	Onboarding: undefined;
@@ -27,5 +27,7 @@ export const Navigator = () => (
 
 			<RootStack.Screen name="HomeStack" component={BottomTabNavigator} />
 		</RootStack.Navigator>
+
+		<View />
 	</NavigationContainer>
 );
