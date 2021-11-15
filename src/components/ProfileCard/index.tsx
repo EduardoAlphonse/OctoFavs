@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	Image,
+	TouchableOpacityProps,
+} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useStorage } from '../../hooks/useStorage';
 
@@ -13,15 +19,15 @@ export type Profile = {
 	name: string;
 };
 
-type ProfileCardProps = {
+type ProfileCardProps = TouchableOpacityProps & {
 	data: Profile;
 };
 
-export const ProfileCard = ({ data }: ProfileCardProps) => {
+export const ProfileCard = ({ data, ...props }: ProfileCardProps) => {
 	const { removeProfileFromState } = useStorage();
-	
+
 	return (
-		<TouchableOpacity style={styles.card} activeOpacity={0.4}>
+		<TouchableOpacity style={styles.card} activeOpacity={0.4} {...props}>
 			<Image source={{ uri: data.avatar_url }} style={styles.avatar} />
 			<View style={styles.data}>
 				<View style={styles.nameWrapper}>

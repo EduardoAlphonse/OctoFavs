@@ -7,7 +7,9 @@ import { BottomTabStackParamList } from '../../navigation/stacks';
 import { Button } from '../../components/Button';
 import { ProfileCard } from '../../components/ProfileCard';
 import { HeaderInfo } from '../../components/HeaderInfo';
+
 import { useStorage } from '../../hooks/useStorage';
+import { useProfileModal } from '../../hooks/useProfileModal';
 
 import { styles } from './styles';
 
@@ -20,8 +22,15 @@ export function Home() {
 	const { savedProfiles } = useStorage();
 	const { navigate } = useNavigation<HomeNavigationProps>();
 
+	const { handleSetUsername, openModal } = useProfileModal();
+
 	const handleSearchProfile = () => {
 		navigate('AddProfile');
+	};
+
+	const handleSelectProfile = (username: string) => {
+		handleSetUsername(username);
+		openModal();
 	};
 
 	return (
@@ -38,7 +47,12 @@ export function Home() {
 					<View style={styles.userListWrapper}>
 						<FlatList
 							data={savedProfiles}
-							renderItem={({ item }) => <ProfileCard data={item} />}
+							renderItem={({ item }) => (
+								<ProfileCard
+									onPress={() => handleSelectProfile(item.login)}
+									data={item}
+								/>
+							)}
 							keyExtractor={(item) => String(item.id)}
 							ItemSeparatorComponent={Separator}
 							showsVerticalScrollIndicator={false}

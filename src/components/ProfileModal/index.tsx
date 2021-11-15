@@ -136,7 +136,11 @@ const ModalHeader = ({
 	isLoading,
 	closeModal,
 }: ModalHeaderProps) => {
-	const { saveProfileToState } = useStorage();
+	const { saveProfileToState, removeProfileFromState, savedProfiles } =
+		useStorage();
+
+	const isProfileSaved = !!savedProfiles.filter((profile) => profile.id === id)
+		.length;
 
 	const user: Profile = {
 		id,
@@ -145,8 +149,12 @@ const ModalHeader = ({
 		avatar_url,
 	};
 
-	const handleSaveUser = () => {
+	const handleSaveProfile = () => {
 		saveProfileToState(user);
+	};
+
+	const handleRemoveProfile = () => {
+		removeProfileFromState(user);
 	};
 
 	return (
@@ -174,13 +182,24 @@ const ModalHeader = ({
 					<View style={styles.userDataWrapper}>
 						<Image source={{ uri: avatar_url }} style={styles.avatar} />
 						<Text style={styles.title}>{name}</Text>
-						<TouchableOpacity
-							onPress={handleSaveUser}
-							hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-							style={styles.starButton}
-						>
-							<AntDesign name="staro" size={24} color={colors.primary} />
-						</TouchableOpacity>
+
+						{isProfileSaved ? (
+							<TouchableOpacity
+								onPress={handleRemoveProfile}
+								hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+								style={styles.starButton}
+							>
+								<AntDesign name="star" size={24} color={colors.primary} />
+							</TouchableOpacity>
+						) : (
+							<TouchableOpacity
+								onPress={handleSaveProfile}
+								hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+								style={styles.starButton}
+							>
+								<AntDesign name="staro" size={24} color={colors.primary} />
+							</TouchableOpacity>
+						)}
 					</View>
 				)}
 			</View>
