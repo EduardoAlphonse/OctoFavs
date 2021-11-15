@@ -1,7 +1,12 @@
 import React, { useState, useEffect, createContext, ReactNode } from 'react';
 
 import { Profile } from '../components/ProfileCard';
-import { saveProfile, listProfiles, removeProfile } from '../services/storage';
+import {
+	saveProfile,
+	listProfiles,
+	removeProfile,
+	clearStorage,
+} from '../services/storage';
 
 type StorageContextData = {
 	savedProfiles: Profile[];
@@ -28,6 +33,11 @@ export const StorageContextProvider = ({
 	};
 
 	const saveProfileToState = async (user: Profile) => {
+		user = {
+			...user,
+			name: user.name ?? 'Usuário sem nome 🐙',
+		};
+
 		const newState = await saveProfile(user);
 
 		setSavedProfiles(newState);
@@ -40,6 +50,7 @@ export const StorageContextProvider = ({
 	};
 
 	useEffect(() => {
+		// clearStorage();
 		loadProfilesToState();
 	}, []);
 

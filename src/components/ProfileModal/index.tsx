@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { Modalize } from 'react-native-modalize';
-import { IHandles } from 'react-native-modalize/lib/options';
 
 import { RepositoryCard } from '../RepositoryCard';
 import { Profile } from '../ProfileCard';
@@ -33,18 +32,6 @@ type RepositoriesResponse = {
 type UserData = Profile & {
 	repositories: RepositoriesResponse[];
 };
-
-// type ProfileModalProps = {
-// 	username: string;
-// 	closeModal: () => void;
-// 	modalRef: RefObject<IHandles>;
-// };
-
-// export const ProfileModal = ({
-// 	username,
-// 	closeModal,
-// 	modalRef,
-// }: ProfileModalProps) => {
 
 export const ProfileModal = () => {
 	const [userData, setUserData] = useState<UserData>({} as UserData);
@@ -172,14 +159,7 @@ const ModalHeader = ({
 					<Feather name="arrow-left" size={24} color={colors.textLight} />
 				</TouchableOpacity>
 
-				<Text style={styles.username}>
-					{/* <AntDesign
-					name="github"
-					size={16}
-					color={colors.textLight}
-				/> */}
-					{login}
-				</Text>
+				<Text style={styles.username}>{login}</Text>
 			</View>
 
 			<View style={styles.userDataContainer}>
