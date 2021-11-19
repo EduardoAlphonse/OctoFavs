@@ -37,10 +37,27 @@ export const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 	},
+	avatarButtonWrapper: {
+		width: 110,
+		height: 110,
+		borderRadius: 110,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	avatarButton: {
+		width: 106,
+		height: 106,
+		borderRadius: 106,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: colors.background,
+	},
 	avatar: {
 		width: 100,
 		height: 100,
 		borderRadius: 100,
+		// borderWidth: 4,
+		// borderColor: colors.background,
 	},
 	title: {
 		...typography.title,

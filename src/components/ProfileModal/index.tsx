@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { Modalize } from 'react-native-modalize';
+import * as WebBrowser from 'expo-web-browser';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { RepositoryCard } from '../RepositoryCard';
 import { Profile } from '../ProfileCard';
@@ -157,6 +159,12 @@ const ModalHeader = ({
 		removeProfileFromState(user);
 	};
 
+	const handleOpenProfile = () => {
+		WebBrowser.openBrowserAsync(`https://github.com/${login}/`, {
+			createTask: false,
+		});
+	};
+
 	return (
 		<View style={styles.headerContainer}>
 			<View style={styles.header}>
@@ -173,14 +181,28 @@ const ModalHeader = ({
 			<View style={styles.userDataContainer}>
 				{isLoading ? (
 					<>
-						<AntDesign name="github" size={100} color={colors.accent} />
+						<AntDesign name="github" size={110} color={colors.accent} />
 						<Text style={[styles.title, { color: colors.accent }]}>
 							{login}
 						</Text>
 					</>
 				) : (
 					<View style={styles.userDataWrapper}>
-						<Image source={{ uri: avatar_url }} style={styles.avatar} />
+						<LinearGradient
+							colors={[colors.primary, colors.accent]}
+							style={styles.avatarButtonWrapper}
+							start={{ x: 0, y: 0 }}
+							end={{ x: 1, y: 1 }}
+						>
+							<TouchableOpacity
+								onPress={handleOpenProfile}
+								activeOpacity={1}
+								style={styles.avatarButton}
+							>
+								<Image source={{ uri: avatar_url }} style={styles.avatar} />
+							</TouchableOpacity>
+						</LinearGradient>
+
 						<Text style={styles.title}>{name}</Text>
 
 						{isProfileSaved ? (
