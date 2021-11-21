@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -20,18 +20,24 @@ type HomeNavigationProps = NativeStackNavigationProp<
 
 export function Home() {
 	const { savedProfiles } = useStorage();
-	const { navigate } = useNavigation<HomeNavigationProps>();
+	const navigation = useNavigation<HomeNavigationProps>();
 
 	const { handleSetUsername, openModal } = useProfileModal();
 
 	const handleSearchProfile = () => {
-		navigate('AddProfile');
+		navigation.navigate('AddProfile');
 	};
 
 	const handleSelectProfile = (username: string) => {
 		handleSetUsername(username);
 		openModal();
 	};
+
+	useEffect(() => {
+		navigation.addListener('beforeRemove', (event) => {
+			event.preventDefault();
+		});
+	}, [navigation]);
 
 	return (
 		<View style={styles.container}>

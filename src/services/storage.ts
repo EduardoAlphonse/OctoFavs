@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Profile } from '../components/ProfileCard';
-import { COLLECTION_PROFILES } from '../config/database';
+import { COLLECTION_PROFILES, COLLECTION_CONFIG } from '../config/database';
 
 export const saveProfile = async (user: Profile) => {
 	try {
@@ -50,4 +50,40 @@ export const listProfiles = async () => {
 	}
 };
 
-export const clearStorage = async () => await AsyncStorage.clear();
+export const clearStorage = async () => {
+	try {
+		await AsyncStorage.clear();
+	} catch (error) {
+		console.log('Não foi possível remover os perfis salvos.');
+	}
+};
+
+export const getConfig = async (): Promise<{ openOnce: boolean }> => {
+	try {
+		const config = await AsyncStorage.getItem(COLLECTION_CONFIG);
+		if (config) {
+			const parsedConfig = JSON.parse(config);
+
+			return parsedConfig;
+		}
+
+		return {
+			openOnce: false,
+		};
+	} catch (error) {
+		console.log('Houve um erro ao obter as configurações do aplicativo.');
+
+		throw error;
+	}
+};
+
+export const setConfig = async () => {
+	try {
+		const config = JSON.stringify({ openOnce: true });
+		await AsyncStorage.setItem(COLLECTION_CONFIG, config);
+	} catch (error) {
+		console.log('Houve um erro ao salvar as configurações.');
+
+		throw error;
+	}
+};

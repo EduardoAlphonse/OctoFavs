@@ -6,13 +6,16 @@ import {
 	listProfiles,
 	removeProfile,
 	clearStorage,
+	getConfig,
 } from '../services/storage';
 
 type StorageContextData = {
 	savedProfiles: Profile[];
+	openOnce: boolean;
 	loadProfilesToState: () => void;
 	saveProfileToState: (user: Profile) => void;
 	removeProfileFromState: (user: Profile) => void;
+	clearProfiles: () => void;
 };
 
 export const StorageContext = createContext({} as StorageContextData);
@@ -25,6 +28,7 @@ export const StorageContextProvider = ({
 	children,
 }: StorageContextProviderProps) => {
 	const [savedProfiles, setSavedProfiles] = useState<Profile[]>([]);
+	const [openOnce, setOpenOnce] = useState(false);
 
 	const loadProfilesToState = async () => {
 		const storedProfiles = await listProfiles();
@@ -49,6 +53,21 @@ export const StorageContextProvider = ({
 		setSavedProfiles(newState);
 	};
 
+	const clearProfiles = async () => {
+		await clearStorage();
+
+		setSavedProfiles([]);
+	};
+
+	useEffect(() => {
+		(async () => {
+			const configResponse = await getConfig();
+			if (configResponse.openOnce) {
+				setOpenOnce(true);
+			}
+		})();
+	}, []);
+
 	useEffect(() => {
 		// clearStorage();
 		loadProfilesToState();
@@ -58,9 +77,11 @@ export const StorageContextProvider = ({
 		<StorageContext.Provider
 			value={{
 				savedProfiles,
+				openOnce,
 				loadProfilesToState,
 				saveProfileToState,
 				removeProfileFromState,
+				clearProfiles,
 			}}
 		>
 			{children}

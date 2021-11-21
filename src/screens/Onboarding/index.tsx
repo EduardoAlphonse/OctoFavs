@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -6,6 +6,8 @@ import { Feather } from '@expo/vector-icons';
 
 import { RootStackParamList } from '../../navigation';
 import { Button } from '../../components/Button';
+import { setConfig } from '../../services/storage';
+import { getConfig } from '../../services/storage';
 
 import { colors } from '../../styles';
 import { styles } from './styles';
@@ -19,8 +21,19 @@ export const Onboarding = () => {
 	const navigation = useNavigation<OnboardingNavigationProps>();
 
 	const handleContinue = () => {
+		setConfig();
 		navigation.navigate('HomeStack');
 	};
+
+	useEffect(() => {
+		(async () => {
+			const config = await getConfig();
+
+			if (config.openOnce) {
+				navigation.navigate('HomeStack');
+			}
+		})();
+	}, []);
 
 	return (
 		<View style={styles.container}>

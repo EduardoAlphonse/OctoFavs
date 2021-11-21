@@ -26,7 +26,6 @@ export const BottomTabNavigator = () => {
 				tabBarStyle: styles.tabBarStyle,
 				headerShown: false,
 			}}
-			backBehavior="none"
 		>
 			<BottomTabStack.Screen
 				name="Home"
