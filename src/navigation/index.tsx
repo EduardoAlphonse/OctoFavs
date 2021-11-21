@@ -11,7 +11,6 @@ import { BottomTabNavigator } from './stacks';
 import { ProfileModal } from '../components/ProfileModal';
 import { ProfileModalContextProvider } from '../contexts/ProfileModalContext';
 import { StorageContextProvider } from '../contexts/StorageContext';
-import { useStorage } from '../hooks/useStorage';
 
 export type RootStackParamList = {
 	Onboarding: undefined;
@@ -21,8 +20,6 @@ export type RootStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export const Navigator = () => {
-	const { openOnce } = useStorage();
-
 	return (
 		<StorageContextProvider>
 			<ProfileModalContextProvider>
@@ -31,7 +28,6 @@ export const Navigator = () => {
 						screenOptions={{
 							headerShown: false,
 						}}
-						initialRouteName={openOnce ? 'HomeStack' : 'Onboarding'}
 					>
 						<RootStack.Screen name="Onboarding" component={Onboarding} />
 

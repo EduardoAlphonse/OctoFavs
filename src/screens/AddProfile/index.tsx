@@ -13,6 +13,7 @@ import { ProfileSearchCard } from '../../components/ProfileSearchCard';
 import { HeaderInfo } from '../../components/HeaderInfo';
 
 import { useProfileModal } from '../../hooks/useProfileModal';
+import { useStorage } from '../../hooks/useStorage';
 import { api } from '../../services/api';
 
 import { colors } from '../../styles';
@@ -28,6 +29,7 @@ export function AddProfile() {
 	const [isSearching, setIsSearching] = useState(false);
 
 	const { openModal, handleSetUsername } = useProfileModal();
+	const { savedProfiles } = useStorage();
 
 	const inputRef = useRef<TextInput>(null);
 
@@ -151,12 +153,6 @@ export function AddProfile() {
 					style={styles.searchIcon}
 				/>
 			</View>
-
-			{/* <ProfileModal
-				modalRef={modalRef}
-				closeModal={handleCloseModal}
-				username={selectedUser}
-			/> */}
 		</View>
 	);
 }

@@ -16,6 +16,14 @@ export const styles = StyleSheet.create({
 		borderRadius: 100,
 		marginBottom: 20,
 	},
+	star: {
+		position: 'absolute',
+		top: 10,
+		right: 10,
+		padding: 4,
+		backgroundColor: colors.background,
+		borderRadius: 20,
+	},
 	username: {
 		...typography.textSmall,
 		color: colors.text,

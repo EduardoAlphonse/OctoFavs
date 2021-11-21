@@ -12,7 +12,7 @@ export const HeaderInfo = ({ title, data }: HeaderInfoProps) => {
 	return (
 		<View style={styles.headerWrapper}>
 			<Text style={styles.text}>{title}</Text>
-			{data && <Text style={styles.text}>{data}</Text>}
+			{data ? <Text style={styles.text}>{data}</Text> : null}
 		</View>
 	);
 };
